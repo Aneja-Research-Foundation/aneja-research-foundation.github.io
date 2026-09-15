@@ -85,11 +85,15 @@
         iris.style.top = (r.top + r.height / 2) + 'px';
       }
       intro.classList.add('out');
-      // release the scroll lock as the zoom starts, not when it ends, so the
-      // page is already live underneath by the time the logo dissolves
-      document.documentElement.classList.remove('intro-armed');
+      /* Release the scroll lock as the zoom starts so the page is live
+         underneath — but NOT intro-armed, which is what keeps the overlay
+         displayed. Dropping that here hid the whole outro instantly. */
+      document.documentElement.classList.remove('intro-lock');
       document.dispatchEvent(new Event('mim:intro-done'));
-      setTimeout(function () { intro.remove(); }, 1060);
+      setTimeout(function () {
+        document.documentElement.classList.remove('intro-armed');
+        intro.remove();
+      }, 1060);
     }
     const skip = intro.querySelector('.intro-skip');
     if (skip) skip.addEventListener('click', endIntro);
@@ -97,7 +101,7 @@
     setTimeout(endIntro, still ? 0 : 1800);
     // never trap the page behind the intro if something above throws
     setTimeout(function () {
-      document.documentElement.classList.remove('intro-armed');
+      document.documentElement.classList.remove('intro-lock', 'intro-armed');
     }, 6000);
   }
 
