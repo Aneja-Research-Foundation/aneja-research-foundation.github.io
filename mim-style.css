@@ -1387,7 +1387,9 @@ html.intro-armed .intro{
    1254px source at or above one image pixel per device pixel even on
    2-3x phone screens. */
 .intro{--logo:clamp(84px,13vw,116px);--logo-z:5;}
-.intro-badge{width:var(--logo);height:var(--logo);}
+/* a fixed-width block isn't centred by the intro's text-align, so centre
+   it explicitly — without this the badge sat at the left of the stack */
+.intro-badge{width:var(--logo);height:var(--logo);margin-inline:auto;}
 .intro-logo{
   position:absolute;
   left:50%;top:50%;
