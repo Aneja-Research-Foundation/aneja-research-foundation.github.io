@@ -1083,3 +1083,127 @@ footer{
   .ch-solve .ch-windows rect{opacity:.7;}
   .ch-think .ch-idea{opacity:1;}
 }
+
+/* ============================================================
+   MOTION LAYER  (set up by mim-motion.js)
+   ============================================================ */
+
+/* ---- scroll progress ---- */
+.scroll-progress{
+  position:fixed;top:0;left:0;right:0;height:3px;
+  background:var(--grad-1);
+  transform:scaleX(0);
+  transform-origin:left center;
+  z-index:999;
+  pointer-events:none;
+}
+
+/* ---- kinetic headline ---- */
+.hero h1.kinetic .kin{
+  display:inline-block;
+  animation:kinRise .8s cubic-bezier(.2,.85,.25,1) both;
+}
+.hero h1.kinetic .line2{display:block;}
+@keyframes kinRise{
+  0%{opacity:0;transform:translateY(.5em) rotate(4deg);}
+  100%{opacity:1;transform:translateY(0) rotate(0);}
+}
+/* No drift on .grad-text: MOVE uses the logo's exact colour ramp, and
+   animating background-position slides pale stops across the word. */
+
+/* ---- marquee band ---- */
+.marquee{
+  overflow:hidden;
+  border-top:1px solid var(--line);
+  border-bottom:1px solid var(--line);
+  background:var(--bg-soft);
+  padding:18px 0;
+  display:flex;
+  user-select:none;
+}
+.marquee-row{
+  display:flex;
+  flex:0 0 auto;
+  gap:38px;
+  padding-right:38px;
+  animation:marqueeRun 26s linear infinite;
+}
+.marquee:hover .marquee-row{animation-play-state:paused;}
+.marquee span{
+  font-family:'Barlow Condensed',sans-serif;font-weight:800;font-style:italic;
+  text-transform:uppercase;
+  font-size:clamp(22px,3.4vw,40px);
+  white-space:nowrap;
+  color:var(--ink);
+  opacity:.85;
+}
+.marquee span.hot{
+  -webkit-background-clip:text;background-clip:text;
+  -webkit-text-fill-color:transparent;color:transparent;
+  background-image:var(--grad-1);
+  opacity:1;
+}
+.marquee i{
+  font-style:normal;
+  align-self:center;
+  color:var(--cyan);
+  font-size:18px;
+  opacity:.7;
+}
+@keyframes marqueeRun{
+  0%{transform:translateX(0);}
+  100%{transform:translateX(-100%);}
+}
+
+/* ---- track cards: cursor spotlight + tilt ---- */
+.tracks-grid{perspective:1100px;}
+.track-card{
+  transform:rotateX(var(--rx,0deg)) rotateY(var(--ry,0deg));
+  transform-style:preserve-3d;
+  transition:background .35s ease,transform .3s ease;
+}
+.track-card .track-spot{
+  content:"";
+  position:absolute;inset:0;
+  z-index:0;
+  opacity:0;
+  transition:opacity .35s ease;
+  background:radial-gradient(240px circle at var(--mx,50%) var(--my,50%),
+             rgba(255,255,255,.12), transparent 70%);
+}
+.track-card:hover .track-spot{opacity:1;}
+
+/* ---- buttons catch the light on hover ---- */
+.btn-primary{position:relative;overflow:hidden;}
+.btn-primary::after{
+  content:"";
+  position:absolute;top:0;bottom:0;left:-60%;
+  width:40%;
+  background:linear-gradient(100deg,transparent,rgba(255,255,255,.4),transparent);
+  transform:skewX(-18deg);
+  opacity:0;
+}
+.btn-primary:hover::after{animation:btnShine .75s ease-out;}
+@keyframes btnShine{
+  0%{left:-60%;opacity:1;}
+  100%{left:120%;opacity:0;}
+}
+
+/* ---- grids deal themselves in ---- */
+.stagger.reveal.in > *{
+  animation:tileIn .55s cubic-bezier(.2,.8,.25,1) both;
+  animation-delay:calc(var(--i,0) * 70ms);
+}
+@keyframes tileIn{
+  0%{opacity:0;transform:translateY(16px);}
+  100%{opacity:1;transform:translateY(0);}
+}
+
+@media (prefers-reduced-motion: reduce){
+  .scroll-progress{display:none;}
+  .hero h1.kinetic .kin,
+  .marquee-row,
+  .btn-primary::after,
+  .stagger.reveal.in > *{animation:none;}
+  .track-card{transform:none;}
+}
