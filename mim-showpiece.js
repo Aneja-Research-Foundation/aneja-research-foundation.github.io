@@ -74,12 +74,22 @@
     function endIntro() {
       if (finished) return;
       finished = true;
+      /* Open the iris from the logo's actual centre, so the site comes out
+         of the badge rather than from a spot near it. The logo sits above
+         centre because the words and title stack under it. */
+      const logo = intro.querySelector('.intro-logo');
+      const iris = intro.querySelector('.intro-iris');
+      if (logo && iris) {
+        const r = logo.getBoundingClientRect();
+        iris.style.left = (r.left + r.width / 2) + 'px';
+        iris.style.top = (r.top + r.height / 2) + 'px';
+      }
       intro.classList.add('out');
       // release the scroll lock as the zoom starts, not when it ends, so the
       // page is already live underneath by the time the logo dissolves
       document.documentElement.classList.remove('intro-armed');
       document.dispatchEvent(new Event('mim:intro-done'));
-      setTimeout(function () { intro.remove(); }, 800);
+      setTimeout(function () { intro.remove(); }, 1060);
     }
     const skip = intro.querySelector('.intro-skip');
     if (skip) skip.addEventListener('click', endIntro);

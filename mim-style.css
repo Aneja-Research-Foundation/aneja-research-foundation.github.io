@@ -1311,22 +1311,40 @@ html.intro-armed body{overflow:hidden;}
 html.intro-armed .intro{
   display:grid;place-items:center;
   position:fixed;inset:0;z-index:2000;
-  background:var(--bg);
   text-align:center;
 }
-.intro.out{animation:introOut .78s cubic-bezier(.55,0,.35,1) forwards;}
-@keyframes introOut{
-  0%,42%{opacity:1;}
-  100%{opacity:0;}
+/* A disc of pure border: the hole is the element's content box, so at
+   width:0 the screen is solid, and growing the width opens the site up
+   from the middle. Sits under the logo, above the page. */
+.intro-iris{
+  position:fixed;
+  left:50%;top:46%;
+  transform:translate(-50%,-50%);
+  box-sizing:content-box;
+  width:0;height:0;
+  border-radius:50%;
+  border:110vmax solid var(--bg);
+  z-index:0;
 }
-/* The badge is 1254px square, so it stays sharp until roughly 14x. It
-   fades out through the back half of the zoom, which hides the softening
-   and hands the screen over to the page behind it. */
-.intro.out .intro-logo{animation:introZoom .78s cubic-bezier(.5,0,.4,1) forwards;}
+.intro-inner{position:relative;z-index:1;}
+/* Two beats, in order: the logo pushes in at you, and only then does the
+   site open out of the middle of it. */
+.intro.out{pointer-events:none;animation:introSafety 1.02s linear forwards;}
+/* last-resort reveal if the iris ever fails to clear the viewport */
+@keyframes introSafety{0%,88%{opacity:1;}100%{opacity:0;}}
+
+.intro.out .intro-logo{animation:introZoom 1.02s cubic-bezier(.5,0,.35,1) forwards;}
 @keyframes introZoom{
   0%{transform:scale(1);opacity:1;}
-  48%{opacity:1;}
-  100%{transform:scale(15);opacity:0;}
+  41%{transform:scale(2.4);opacity:1;}
+  68%{transform:scale(3.1);opacity:0;}
+  100%{transform:scale(3.5);opacity:0;}
+}
+/* opens once the zoom has landed, not alongside it */
+.intro.out .intro-iris{animation:irisOpen .6s cubic-bezier(.62,0,.36,1) .42s forwards;}
+@keyframes irisOpen{
+  0%{width:0;height:0;}
+  100%{width:260vmax;height:260vmax;}
 }
 .intro.out .intro-words,
 .intro.out .intro-title,
