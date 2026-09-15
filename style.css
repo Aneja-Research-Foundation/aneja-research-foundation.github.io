@@ -989,3 +989,81 @@ flex-direction:column;
 @media (max-width:900px){
   .org-chart-inner{min-width:1000px;}
 }
+
+/* STAFF PORTAL
+   A sign-in gateway, so the heading should frame the Sign In button rather
+   than push it below the fold. Scoped to .hero-staff so no other page's
+   hero changes. */
+
+.hero-staff{
+min-height:auto;
+padding:112px 8% 96px;
+}
+
+.hero-staff .tagline{
+display:inline-flex;
+align-items:center;
+gap:10px;
+padding:8px 16px;
+border:1px solid rgba(212,175,55,.35);
+border:1px solid color-mix(in srgb,var(--gold-bright) 40%,transparent);
+border-radius:999px;
+font-size:12px;
+letter-spacing:3px;
+margin-bottom:30px;
+}
+
+.hero-staff .lock-dot{
+width:7px;
+height:7px;
+border-radius:50%;
+background:var(--gold-bright);
+box-shadow:0 0 0 4px color-mix(in srgb,var(--gold-bright) 20%,transparent);
+}
+
+.hero-staff h1{
+font-size:clamp(46px,6.2vw,80px);
+line-height:1.04;
+letter-spacing:-.5px;
+margin-bottom:28px;
+}
+
+/* the qualifier reads as a subline, not a second headline */
+.hero-staff h1 span{
+display:block;
+margin-top:12px;
+font-size:.44em;
+font-weight:600;
+letter-spacing:0;
+line-height:1.2;
+}
+
+.hero-staff .description{
+font-size:18px;
+line-height:1.75;
+max-width:640px;
+margin-bottom:22px;
+}
+
+.hero-staff .hero-buttons{
+margin-top:34px;
+flex-wrap:wrap;
+}
+
+@media(max-width:1000px){
+.hero-staff{padding:64px 7% 72px;}
+.hero-staff h1{font-size:44px;}
+.hero-staff h1 span{font-size:.5em;}
+.hero-staff .description{font-size:16px;}
+}
+
+/* the restricted pill has to stay on one line on a phone */
+@media(max-width:480px){
+.hero-staff .tagline{
+font-size:11px;
+letter-spacing:1.5px;
+padding:7px 13px;
+gap:8px;
+white-space:nowrap;
+}
+}
