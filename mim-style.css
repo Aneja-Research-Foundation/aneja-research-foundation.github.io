@@ -908,3 +908,178 @@ footer{
   .callout-banner{padding:44px 26px;}
   .track-hero{padding:140px 0 70px;}
 }
+
+/* ============================================================
+   TRACK CHARACTERS
+   Four line-art figures (mim-characters.js) that act out their
+   track: dancing, hand up, coding, reading a building.
+   Joints rotate about explicit viewBox coordinates, so every
+   transform-origin below is in SVG user units — which requires
+   transform-box:view-box on the animated groups.
+   ============================================================ */
+.ch-slot{
+  position:absolute;
+  pointer-events:none;
+  z-index:0;
+}
+.ch-slot svg{
+  width:100%;height:100%;display:block;
+  overflow:visible;
+}
+.ch-slot g,.ch-slot path,.ch-slot circle,.ch-slot ellipse,.ch-slot rect{
+  transform-box:view-box;
+}
+/* Figures hold a neutral pose until scrolled into view. */
+.ch-slot .ch-shadow{opacity:.35;}
+.ch-slot .ch-windows rect{opacity:.28;}
+.ch-slot .ch-code path{stroke-dasharray:none;}
+
+/* ---- where the figures sit ---- */
+.track-card .ch-slot{
+  right:-14px;bottom:-18px;
+  width:176px;height:230px;
+  opacity:.26;
+  transition:opacity .4s ease,transform .4s ease;
+  transform:translateY(6px);
+}
+.track-card:hover .ch-slot{opacity:.62;transform:translateY(0);}
+.track-hero .ch-slot{
+  right:4%;bottom:0;
+  width:min(30vw,340px);height:min(40vw,440px);
+  opacity:.75;
+  z-index:1;
+}
+/* The figure carries the hero now — pull the poster wash back so the two
+   don't fight for the same corner. */
+.track-hero .track-hero-art{opacity:.3;}
+
+/* ---------- PERFORM: the dance ---------- */
+.ch-live .ch-perform .ch-hair{
+  transform-origin:88px 48px;
+  animation:chHairSwing 1.6s ease-in-out infinite;
+}
+.ch-live .ch-perform .ch-arm-a{
+  transform-origin:102px 90px;
+  animation:chArmA 1.6s ease-in-out infinite;
+}
+.ch-live .ch-perform .ch-arm-b{
+  transform-origin:100px 96px;
+  animation:chArmB 1.6s ease-in-out infinite;
+}
+.ch-live .ch-perform .ch-skirt{
+  transform-origin:98px 121px;
+  animation:chSkirt 1.6s ease-in-out infinite;
+}
+.ch-live .ch-perform .ch-leg{
+  transform-origin:112px 170px;
+  animation:chKick 1.6s ease-in-out infinite;
+}
+.ch-live .ch-perform .ch-sparks{animation:chSparks 1.6s ease-in-out infinite;}
+@keyframes chHairSwing{0%,100%{transform:rotate(-7deg);}50%{transform:rotate(9deg);}}
+@keyframes chArmA{0%,100%{transform:rotate(-14deg);}50%{transform:rotate(12deg);}}
+@keyframes chArmB{0%,100%{transform:rotate(10deg);}50%{transform:rotate(-16deg);}}
+@keyframes chSkirt{0%,100%{transform:skewX(7deg);}50%{transform:skewX(-8deg);}}
+@keyframes chKick{0%,100%{transform:rotate(-12deg);}50%{transform:rotate(14deg);}}
+@keyframes chSparks{0%,100%{opacity:.25;}50%{opacity:1;}}
+
+/* ---------- THINK: hand goes up, idea arrives first ---------- */
+.ch-live .ch-think .ch-arm-raise{
+  transform-origin:94px 98px;
+  animation:chRaise 3.4s cubic-bezier(.3,.9,.3,1) infinite;
+}
+.ch-live .ch-think .ch-idea{
+  transform-origin:120px 40px;
+  animation:chIdea 3.4s ease-in-out infinite;
+}
+@keyframes chRaise{
+  0%,12%{transform:rotate(56deg);}
+  32%,72%{transform:rotate(0deg);}
+  92%,100%{transform:rotate(56deg);}
+}
+@keyframes chIdea{
+  0%,26%{opacity:0;transform:scale(.6);}
+  40%,70%{opacity:1;transform:scale(1);}
+  86%,100%{opacity:0;transform:scale(.6);}
+}
+
+/* ---------- BUILD: typing, code filling in, caret blinking ---------- */
+.ch-live .ch-build .ch-arm-type-a{
+  transform-origin:64px 104px;
+  animation:chTypeA .42s ease-in-out infinite;
+}
+.ch-live .ch-build .ch-arm-type-b{
+  transform-origin:68px 116px;
+  animation:chTypeB .42s ease-in-out infinite;
+}
+.ch-live .ch-build .ch-lean{
+  transform-origin:60px 86px;
+  animation:chLean 3.6s ease-in-out infinite;
+}
+.ch-live .ch-build .ch-code path{
+  stroke-dasharray:34;
+  animation:chCodeType 3.6s steps(1,end) infinite;
+}
+.ch-live .ch-build .ch-code path:nth-child(1){animation-delay:0s;}
+.ch-live .ch-build .ch-code path:nth-child(2){animation-delay:.5s;}
+.ch-live .ch-build .ch-code path:nth-child(3){animation-delay:1s;}
+.ch-live .ch-build .ch-caret{animation:chBlink 1s steps(1,end) infinite;}
+@keyframes chTypeA{0%,100%{transform:rotate(0deg);}50%{transform:rotate(3.5deg);}}
+@keyframes chTypeB{0%,100%{transform:rotate(3.5deg);}50%{transform:rotate(0deg);}}
+@keyframes chLean{0%,100%{transform:rotate(0deg);}50%{transform:rotate(2.5deg);}}
+@keyframes chCodeType{
+  0%{stroke-dashoffset:34;}
+  22%,84%{stroke-dashoffset:0;}
+  96%,100%{stroke-dashoffset:34;}
+}
+@keyframes chBlink{0%,49%{opacity:1;}50%,100%{opacity:0;}}
+
+/* ---------- SOLVE: point, sight-line travels, building wakes up ---------- */
+.ch-live .ch-solve .ch-arm-point{
+  transform-origin:50px 98px;
+  animation:chPoint 4s ease-in-out infinite;
+}
+.ch-live .ch-solve .ch-hair{
+  transform-origin:52px 60px;
+  animation:chHairSwing 4s ease-in-out infinite;
+}
+.ch-live .ch-solve .ch-sight{animation:chSight 4s linear infinite;}
+.ch-live .ch-solve .ch-windows rect{
+  opacity:.28;
+  animation:chWindow 4s ease-in-out infinite;
+}
+.ch-live .ch-solve .ch-windows rect:nth-child(1){animation-delay:1.0s;}
+.ch-live .ch-solve .ch-windows rect:nth-child(2){animation-delay:1.15s;}
+.ch-live .ch-solve .ch-windows rect:nth-child(3){animation-delay:1.3s;}
+.ch-live .ch-solve .ch-windows rect:nth-child(4){animation-delay:1.45s;}
+.ch-live .ch-solve .ch-windows rect:nth-child(5){animation-delay:1.6s;}
+.ch-live .ch-solve .ch-windows rect:nth-child(6){animation-delay:1.75s;}
+.ch-live .ch-solve .ch-windows rect:nth-child(7){animation-delay:1.9s;}
+.ch-live .ch-solve .ch-windows rect:nth-child(8){animation-delay:2.05s;}
+@keyframes chPoint{
+  0%,100%{transform:rotate(4deg);}
+  18%,72%{transform:rotate(-3deg);}
+}
+@keyframes chSight{
+  0%{opacity:0;stroke-dashoffset:56;}
+  20%,80%{opacity:.9;}
+  100%{opacity:0;stroke-dashoffset:0;}
+}
+@keyframes chWindow{
+  0%,20%{opacity:.28;}
+  45%,80%{opacity:1;}
+  100%{opacity:.12;}
+}
+
+@media (max-width:900px){
+  .track-hero .ch-slot{
+    width:min(46vw,220px);height:min(58vw,280px);
+    right:-12%;opacity:.34;
+  }
+  .track-card .ch-slot{width:128px;height:168px;opacity:.2;}
+}
+
+@media (prefers-reduced-motion: reduce){
+  .ch-slot *{animation:none !important;}
+  .ch-solve .ch-windows rect{opacity:.7;}
+  .ch-think .ch-idea{opacity:1;}
+}
