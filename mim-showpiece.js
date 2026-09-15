@@ -74,17 +74,17 @@
     function endIntro() {
       if (finished) return;
       finished = true;
-      try { sessionStorage.setItem('mimIntro', '1'); } catch (e) { /* private mode */ }
       intro.classList.add('out');
-      setTimeout(function () {
-        document.documentElement.classList.remove('intro-armed');
-        intro.remove();
-      }, 700);
+      // release the scroll lock as the zoom starts, not when it ends, so the
+      // page is already live underneath by the time the logo dissolves
+      document.documentElement.classList.remove('intro-armed');
+      document.dispatchEvent(new Event('mim:intro-done'));
+      setTimeout(function () { intro.remove(); }, 800);
     }
     const skip = intro.querySelector('.intro-skip');
     if (skip) skip.addEventListener('click', endIntro);
     // belt and braces: if this page was armed anyway, don't hold the scroll
-    setTimeout(endIntro, still ? 0 : 2350);
+    setTimeout(endIntro, still ? 0 : 1800);
     // never trap the page behind the intro if something above throws
     setTimeout(function () {
       document.documentElement.classList.remove('intro-armed');

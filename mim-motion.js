@@ -48,10 +48,20 @@
         pieces.push(node);
       }
     });
-    pieces.forEach(function (el, i) {
-      el.style.animationDelay = (i * 45) + 'ms';
-    });
+    function dealIn() {
+      pieces.forEach(function (el, i) {
+        el.style.animation = 'none';
+        void el.offsetWidth;           // force a reflow so the restart takes
+        el.style.animation = '';
+        el.style.animationDelay = (i * 45) + 'ms';
+      });
+    }
+    dealIn();
     h1.classList.add('kinetic');
+
+    /* Behind the intro the headline would finish unseen, so run it again as
+       the logo dissolves — the letters land with the reveal. */
+    document.addEventListener('mim:intro-done', dealIn);
   }
 
   /* ---- track cards: light follows the cursor, card tilts toward it ---- */

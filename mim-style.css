@@ -1314,18 +1314,29 @@ html.intro-armed .intro{
   background:var(--bg);
   text-align:center;
 }
-.intro.out{animation:introWipe .7s cubic-bezier(.7,0,.3,1) forwards;}
-@keyframes introWipe{to{transform:translateY(-100%);}}
-.intro::after{
-  content:"";
-  position:absolute;left:0;right:0;bottom:-5px;height:5px;
-  background:var(--grad-1);
+.intro.out{animation:introOut .78s cubic-bezier(.55,0,.35,1) forwards;}
+@keyframes introOut{
+  0%,42%{opacity:1;}
+  100%{opacity:0;}
 }
+/* The badge is 1254px square, so it stays sharp until roughly 14x. It
+   fades out through the back half of the zoom, which hides the softening
+   and hands the screen over to the page behind it. */
+.intro.out .intro-logo{animation:introZoom .78s cubic-bezier(.5,0,.4,1) forwards;}
+@keyframes introZoom{
+  0%{transform:scale(1);opacity:1;}
+  48%{opacity:1;}
+  100%{transform:scale(15);opacity:0;}
+}
+.intro.out .intro-words,
+.intro.out .intro-title,
+.intro.out .intro-skip{animation:introClear .22s ease forwards;}
+@keyframes introClear{to{opacity:0;transform:translateY(-10px);}}
 .intro-logo{
   width:clamp(84px,13vw,116px);
   height:clamp(84px,13vw,116px);
   border-radius:50%;object-fit:cover;
-  animation:introLogo .85s cubic-bezier(.2,.85,.25,1) both;
+  animation:introLogo .55s cubic-bezier(.2,.85,.25,1) both;
 }
 @keyframes introLogo{
   0%{opacity:0;transform:scale(.55) rotate(-14deg);}
@@ -1346,17 +1357,17 @@ html.intro-armed .intro{
   opacity:0;
   -webkit-background-clip:text;background-clip:text;
   -webkit-text-fill-color:transparent;color:transparent;
-  animation:introSlam .5s cubic-bezier(.2,.9,.25,1) both;
+  animation:introSlam .34s cubic-bezier(.2,.9,.25,1) both;
 }
-.intro-words span:nth-child(1){background-image:var(--grad-perform);animation-delay:.60s;}
-.intro-words span:nth-child(2){background-image:var(--grad-think);animation-delay:.78s;}
-.intro-words span:nth-child(3){background-image:var(--grad-build);animation-delay:.96s;}
-.intro-words span:nth-child(4){background-image:var(--grad-solve);animation-delay:1.14s;}
+.intro-words span:nth-child(1){background-image:var(--grad-perform);animation-delay:.40s;}
+.intro-words span:nth-child(2){background-image:var(--grad-think);animation-delay:.62s;}
+.intro-words span:nth-child(3){background-image:var(--grad-build);animation-delay:.84s;}
+.intro-words span:nth-child(4){background-image:var(--grad-solve);animation-delay:1.06s;}
 @keyframes introSlam{
-  0%{opacity:0;transform:translateX(-50%) scale(1.45);}
-  26%{opacity:1;transform:translateX(-50%) scale(1);}
-  72%{opacity:1;transform:translateX(-50%) scale(1);}
-  100%{opacity:0;transform:translateX(-50%) scale(.9);}
+  0%{opacity:0;transform:translateX(-50%) scale(1.5);}
+  15%{opacity:1;transform:translateX(-50%) scale(1);}
+  75%{opacity:1;transform:translateX(-50%) scale(1);}
+  100%{opacity:0;transform:translateX(-50%) scale(.92);}
 }
 .intro-title{
   margin-top:8px;
@@ -1364,7 +1375,7 @@ html.intro-armed .intro{
   font-size:clamp(30px,6vw,64px);
   line-height:1.05;
   opacity:0;
-  animation:introTitle .7s cubic-bezier(.2,.85,.25,1) 1.42s both;
+  animation:introTitle .5s cubic-bezier(.2,.85,.25,1) 1.26s both;
 }
 .intro-title em{
   font-style:italic;
