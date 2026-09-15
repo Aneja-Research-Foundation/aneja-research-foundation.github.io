@@ -75,16 +75,16 @@ document.addEventListener('DOMContentLoaded', () => {
   });
 
   /* ---- registration switch ----
-     Until registration opens, the header buttons read COMING SOON and point
-     at the interest form. From 1 October 2026 (India time) they read
-     REGISTER NOW and go to the live registration form in the Command
-     Center, and the "registrations open on 1 October" copy updates to
-     match, so nobody has to edit the site that morning. Elements opt in
-     with data-reg-text (replacement HTML) and data-reg-link (retarget).
-     Add ?reg=open to any page URL to preview the post-launch state. */
-  const REG_OPENS_AT = new Date('2026-10-01T00:00:00+05:30').getTime();
+     Off until registration is actually confirmed. When it opens, flip
+     REGISTRATION_OPEN to true: the header COMING SOON buttons become
+     REGISTER NOW and go to the Command Center's /register form, and the
+     "registrations open on..." copy is replaced to match. There is
+     deliberately no date trigger — the timeline may still move.
+     Elements opt in with data-reg-text (replacement HTML) and
+     data-reg-link (retarget). Add ?reg=open to any page URL to preview. */
+  const REGISTRATION_OPEN = false;
   const REG_URL = 'https://arf-command-center.vercel.app/register';
-  const regOpen = Date.now() >= REG_OPENS_AT
+  const regOpen = REGISTRATION_OPEN
     || new URLSearchParams(location.search).get('reg') === 'open';
   if (regOpen) {
     document.querySelectorAll('[data-reg-text]').forEach((el) => {
