@@ -1326,22 +1326,25 @@ html.intro-armed .intro{
   border:110vmax solid var(--bg);
   z-index:0;
 }
-.intro-inner{position:relative;z-index:1;}
+.intro-inner{position:relative;z-index:2;}
+.intro-skip{z-index:3;}
 /* Two beats, in order: the logo pushes in at you, and only then does the
    site open out of the middle of it. */
-.intro.out{pointer-events:none;animation:introSafety 1.02s linear forwards;}
+.intro.out{pointer-events:none;animation:introSafety 1.25s linear forwards;}
 /* last-resort reveal if the iris ever fails to clear the viewport */
 @keyframes introSafety{0%,88%{opacity:1;}100%{opacity:0;}}
 
-.intro.out .intro-logo{animation:introZoom 1.02s cubic-bezier(.5,0,.35,1) forwards;}
+.intro.out .intro-logo{animation:introZoom 1.25s cubic-bezier(.5,0,.35,1) forwards;}
 @keyframes introZoom{
   0%{transform:scale(1);opacity:1;}
-  41%{transform:scale(2.4);opacity:1;}
-  68%{transform:scale(3.1);opacity:0;}
-  100%{transform:scale(3.5);opacity:0;}
+  13%{transform:scale(.84);opacity:1;}    /* wind-up, as the spokes land */
+  21%{transform:scale(1.08);opacity:1;}   /* the punch */
+  50%{transform:scale(2.5);opacity:1;}
+  72%{transform:scale(3.2);opacity:0;}
+  100%{transform:scale(3.6);opacity:0;}
 }
 /* opens once the zoom has landed, not alongside it */
-.intro.out .intro-iris{animation:irisOpen .6s cubic-bezier(.62,0,.36,1) .42s forwards;}
+.intro.out .intro-iris{animation:irisOpen .62s cubic-bezier(.62,0,.36,1) .58s forwards;}
 @keyframes irisOpen{
   0%{width:0;height:0;}
   100%{width:260vmax;height:260vmax;}
@@ -1377,10 +1380,10 @@ html.intro-armed .intro{
   -webkit-text-fill-color:transparent;color:transparent;
   animation:introSlam .34s cubic-bezier(.2,.9,.25,1) both;
 }
-.intro-words span:nth-child(1){background-image:var(--grad-perform);animation-delay:.40s;}
-.intro-words span:nth-child(2){background-image:var(--grad-think);animation-delay:.62s;}
-.intro-words span:nth-child(3){background-image:var(--grad-build);animation-delay:.84s;}
-.intro-words span:nth-child(4){background-image:var(--grad-solve);animation-delay:1.06s;}
+.intro-words span:nth-child(1){background-image:var(--grad-perform);animation-delay:.34s;}
+.intro-words span:nth-child(2){background-image:var(--grad-think);animation-delay:.54s;}
+.intro-words span:nth-child(3){background-image:var(--grad-build);animation-delay:.74s;}
+.intro-words span:nth-child(4){background-image:var(--grad-solve);animation-delay:.94s;}
 @keyframes introSlam{
   0%{opacity:0;transform:translateX(-50%) scale(1.5);}
   15%{opacity:1;transform:translateX(-50%) scale(1);}
@@ -1393,7 +1396,7 @@ html.intro-armed .intro{
   font-size:clamp(30px,6vw,64px);
   line-height:1.05;
   opacity:0;
-  animation:introTitle .5s cubic-bezier(.2,.85,.25,1) 1.26s both;
+  animation:introTitle .5s cubic-bezier(.2,.85,.25,1) 1.16s both;
 }
 .intro-title em{
   font-style:italic;
@@ -1487,7 +1490,121 @@ html.intro-armed .intro{
   .tk-meta{position:static;transform:none;margin:0 auto 40px;padding:0 6%;}
   .tk-fig,.tk-rail{display:none;}
   .intro{display:none !important;}
+  .intro-streaks,.intro-inner,.intro-fig,.intro-charge{animation:none !important;}
   .curtain{display:none;}
   .cd-cell .old,.cd-cell .new{animation:none;}
   .cd-cell .old{display:none;}
+}
+
+
+/* ============================================================
+   OPENING ACTION — speed lines, impact jolt, character cameos,
+   and a charge-up before the launch.
+   ============================================================ */
+
+/* ---- speed lines: the streaks already in the logo, run full-frame ---- */
+.intro-streaks{
+  position:fixed;inset:0;z-index:1;
+  overflow:hidden;
+  pointer-events:none;
+}
+.intro-streaks i{
+  position:absolute;
+  left:-60%;
+  height:3px;
+  width:55vw;
+  border-radius:3px;
+  transform:rotate(-18deg);
+  opacity:0;
+  animation:streakRun 1.05s linear infinite;
+}
+.intro-streaks i:nth-child(1){top:12%;animation-delay:.20s;animation-duration:.80s;background:linear-gradient(90deg,transparent,var(--cyan),transparent);}
+.intro-streaks i:nth-child(2){top:22%;animation-delay:.46s;animation-duration:1.05s;background:linear-gradient(90deg,transparent,#fff,transparent);}
+.intro-streaks i:nth-child(3){top:31%;animation-delay:.12s;animation-duration:.92s;background:linear-gradient(90deg,transparent,var(--magenta),transparent);}
+.intro-streaks i:nth-child(4){top:40%;animation-delay:.62s;animation-duration:.74s;background:linear-gradient(90deg,transparent,var(--amber),transparent);}
+.intro-streaks i:nth-child(5){top:49%;animation-delay:.30s;animation-duration:1.15s;background:linear-gradient(90deg,transparent,#fff,transparent);}
+.intro-streaks i:nth-child(6){top:58%;animation-delay:.72s;animation-duration:.86s;background:linear-gradient(90deg,transparent,var(--green),transparent);}
+.intro-streaks i:nth-child(7){top:67%;animation-delay:.24s;animation-duration:.98s;background:linear-gradient(90deg,transparent,var(--violet),transparent);}
+.intro-streaks i:nth-child(8){top:76%;animation-delay:.54s;animation-duration:.80s;background:linear-gradient(90deg,transparent,var(--cyan),transparent);}
+.intro-streaks i:nth-child(9){top:85%;animation-delay:.38s;animation-duration:1.08s;background:linear-gradient(90deg,transparent,var(--orange),transparent);}
+.intro-streaks i:nth-child(10){top:94%;animation-delay:.66s;animation-duration:.90s;background:linear-gradient(90deg,transparent,#fff,transparent);}
+@keyframes streakRun{
+  0%{transform:translateX(0) rotate(-18deg);opacity:0;}
+  12%{opacity:.85;}
+  70%{opacity:.85;}
+  100%{transform:translateX(200vw) rotate(-18deg);opacity:0;}
+}
+.intro.out .intro-streaks{animation:streakClear .18s ease forwards;}
+@keyframes streakClear{to{opacity:0;}}
+
+/* ---- the screen takes a hit on every word ---- */
+.intro-inner,.intro-streaks{animation:introJolt 1.4s linear both;}
+@keyframes introJolt{
+  0%,27%{transform:translate3d(0,0,0) scale(1);}
+  28%{transform:translate3d(-7px,4px,0) scale(1.014);}
+  31%,41%{transform:translate3d(0,0,0) scale(1);}
+  42.5%{transform:translate3d(6px,-4px,0) scale(1.014);}
+  45.5%,55%{transform:translate3d(0,0,0) scale(1);}
+  56.5%{transform:translate3d(-5px,-5px,0) scale(1.016);}
+  59.5%,69%{transform:translate3d(0,0,0) scale(1);}
+  71%{transform:translate3d(5px,5px,0) scale(1.02);}
+  74%,100%{transform:translate3d(0,0,0) scale(1);}
+}
+
+/* ---- each track's character flashes up behind its word ---- */
+.intro-figs{position:fixed;inset:0;z-index:1;pointer-events:none;}
+/* They alternate sides so each one clears the badge instead of wearing it,
+   and the sequence gets a left-right rhythm. */
+.intro-fig{
+  position:absolute;
+  left:50%;top:50%;
+  width:min(46vw,420px);
+  height:min(62vh,520px);
+  opacity:0;
+  transform:translate(calc(-50% + var(--fx)),-50%);
+  animation:figFlash .34s cubic-bezier(.2,.9,.25,1) both;
+}
+.intro-fig:nth-child(odd){--fx:-17vw;}
+.intro-fig:nth-child(even){--fx:17vw;}
+.intro-fig:nth-child(1){animation-delay:.34s;}
+.intro-fig:nth-child(2){animation-delay:.54s;}
+.intro-fig:nth-child(3){animation-delay:.74s;}
+.intro-fig:nth-child(4){animation-delay:.94s;}
+@keyframes figFlash{
+  0%{opacity:0;transform:translate(calc(-50% + var(--fx)),-50%) scale(.88);}
+  22%{opacity:.6;transform:translate(calc(-50% + var(--fx)),-50%) scale(1);}
+  72%{opacity:.6;transform:translate(calc(-50% + var(--fx)),-50%) scale(1);}
+  100%{opacity:0;transform:translate(calc(-50% + var(--fx)),-50%) scale(1.06);}
+}
+@media (max-width:700px){
+  .intro-fig{width:66vw;height:50vh;}
+  .intro-fig:nth-child(odd){--fx:-13vw;}
+  .intro-fig:nth-child(even){--fx:13vw;}
+}
+
+/* ---- charge-up: spokes rush in, the badge winds up, then fires ---- */
+.intro-badge{position:relative;display:grid;place-items:center;}
+.intro-charge{
+  position:absolute;left:50%;top:50%;
+  width:0;height:0;
+  opacity:0;
+  pointer-events:none;
+}
+.intro-charge i{
+  position:absolute;left:0;top:0;
+  width:3px;height:34px;
+  margin:-17px 0 0 -1.5px;
+  border-radius:3px;
+}
+.intro-charge i:nth-child(1){transform:rotate(0deg) translateY(-58px);background:linear-gradient(var(--amber),transparent);}
+.intro-charge i:nth-child(2){transform:rotate(60deg) translateY(-58px);background:linear-gradient(var(--cyan),transparent);}
+.intro-charge i:nth-child(3){transform:rotate(120deg) translateY(-58px);background:linear-gradient(var(--magenta),transparent);}
+.intro-charge i:nth-child(4){transform:rotate(180deg) translateY(-58px);background:linear-gradient(var(--amber),transparent);}
+.intro-charge i:nth-child(5){transform:rotate(240deg) translateY(-58px);background:linear-gradient(var(--green),transparent);}
+.intro-charge i:nth-child(6){transform:rotate(300deg) translateY(-58px);background:linear-gradient(var(--violet),transparent);}
+.intro.out .intro-charge{animation:chargeIn .30s cubic-bezier(.4,0,.6,1) forwards;}
+@keyframes chargeIn{
+  0%{opacity:0;transform:translate(-50%,-50%) scale(9) rotate(0deg);}
+  35%{opacity:1;}
+  100%{opacity:0;transform:translate(-50%,-50%) scale(.5) rotate(38deg);}
 }
