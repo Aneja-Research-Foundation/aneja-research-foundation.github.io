@@ -112,46 +112,65 @@
     }, 6000);
   }
 
-  /* ================= 3. COUNTDOWN ================= */
+  /* ================= 3. COUNTDOWN =================
+     Split-flap digits. Every card is always drawn with the same two static
+     halves, and gets two flaps only while it changes, so no digit can sit
+     on a different line from its neighbours. */
   const cd = document.querySelector('.countdown[data-target]');
   if (cd) {
     const target = new Date(cd.dataset.target).getTime();
     const grid = cd.querySelector('.cd-grid');
-    const units = [].slice.call(cd.querySelectorAll('.cd-unit'));
+    const cells = [].slice.call(cd.querySelectorAll('.cd-cell'));
+    const FLIP_MS = 620; // matches the two .3s flaps in mim-style.css
 
-    function cells(unit) { return [].slice.call(unit.querySelectorAll('.cd-cell')); }
+    function layer(cls, ch) {
+      return '<span class="' + cls + '"><b>' + ch + '</b></span>';
+    }
 
-    /* Only rebuild a cell whose digit actually changed, so the flip fires
-       on the seconds every second but on the days about once a day. */
+    function draw(cell, ch) {
+      cell.innerHTML = layer('cd-half cd-top', ch) + layer('cd-half cd-bottom', ch);
+    }
+
+    function flip(cell, from, to) {
+      // the new top waits behind the falling leaf; the old bottom stays put
+      // until the new lower leaf lands over it
+      cell.innerHTML =
+        layer('cd-half cd-top', to) +
+        layer('cd-half cd-bottom', from) +
+        layer('cd-flap cd-flap-top', from) +
+        layer('cd-flap cd-flap-bottom', to);
+      clearTimeout(cell._settle);
+      cell._settle = setTimeout(function () { draw(cell, to); }, FLIP_MS);
+    }
+
     function setCell(cell, ch) {
-      if (cell.dataset.v === ch) return;
       const prev = cell.dataset.v;
+      if (prev === ch) return;
       cell.dataset.v = ch;
-      if (prev === undefined || still) { cell.textContent = ch; return; }
-      cell.innerHTML = '<span class="old">' + prev + '</span>'
-                     + '<span class="new">' + ch + '</span>';
+      // first paint, reduced motion, or a background tab: no flip, just draw
+      if (prev === undefined || still || document.hidden) draw(cell, ch);
+      else flip(cell, prev, ch);
     }
 
     function tick() {
       const left = target - Date.now();
       if (left <= 0) {
-        grid.innerHTML = '<div class="cd-done">IT’S HAPPENING</div>';
+        grid.innerHTML = '<div class="cd-done">IT\u2019S HAPPENING</div>';
         clearInterval(timer);
         return;
       }
       const s = Math.floor(left / 1000);
-      const vals = [
-        String(Math.floor(s / 86400)).padStart(3, '0'),
-        String(Math.floor(s / 3600) % 24).padStart(2, '0'),
-        String(Math.floor(s / 60) % 60).padStart(2, '0'),
-        String(s % 60).padStart(2, '0')
-      ];
-      units.forEach(function (unit, i) {
-        const cs = cells(unit);
-        vals[i].split('').forEach(function (ch, j) {
-          if (cs[j]) setCell(cs[j], ch);
-        });
+      const d = Math.floor(s / 86400);
+      const h = Math.floor(s / 3600) % 24;
+      const m = Math.floor(s / 60) % 60;
+      const sec = s % 60;
+      const digits = String(d).padStart(3, '0') + String(h).padStart(2, '0')
+                   + String(m).padStart(2, '0') + String(sec).padStart(2, '0');
+      digits.split('').forEach(function (ch, i) {
+        if (cells[i]) setCell(cells[i], ch);
       });
+      grid.setAttribute('aria-label',
+        d + ' days, ' + h + ' hours and ' + m + ' minutes until MAKE IT MOVE 2026');
     }
     tick();
     var timer = setInterval(tick, 1000);
