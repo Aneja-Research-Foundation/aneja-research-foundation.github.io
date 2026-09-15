@@ -23,9 +23,21 @@
 <meta name="twitter:description" content="Bareilly's youth talent &amp; innovation festival. 24–25 October 2026.">
 <meta name="twitter:image" content="https://aneja-research-foundation.github.io/images/social-share.jpg">
 
-<link rel="stylesheet" href="mim-style.css?v=20">
+<script>try{if(!sessionStorage.getItem("mimIntro")&&!matchMedia("(prefers-reduced-motion: reduce)").matches)document.documentElement.classList.add("intro-armed")}catch(e){}</script>
+<link rel="stylesheet" href="mim-style.css?v=22">
 </head>
 <body>
+
+<div class="intro" id="intro">
+  <div class="intro-inner">
+    <img src="images/mim-logo.png" alt="" class="intro-logo">
+    <div class="intro-words" aria-hidden="true">
+      <span>PERFORM.</span><span>THINK.</span><span>BUILD.</span><span>SOLVE.</span>
+    </div>
+    <div class="intro-title">MAKE IT <em>MOVE</em> 2026</div>
+  </div>
+  <button class="intro-skip" type="button">SKIP</button>
+</div>
 
 <!-- ================= NAV ================= -->
 <nav class="navbar">
@@ -154,6 +166,22 @@
   </div>
 </div>
 
+<!-- ================= COUNTDOWN ================= -->
+<section class="countdown" data-target="2026-10-24T09:00:00+05:30">
+  <div class="wrap">
+    <span class="eyebrow">UNTIL MAKE IT MOVE 2026</span>
+    <div class="cd-grid">
+      <div class="cd-unit"><div class="cd-digits"><div class="cd-cell"></div><div class="cd-cell"></div><div class="cd-cell"></div></div><span class="cd-label">DAYS</span></div>
+      <span class="cd-sep">:</span>
+      <div class="cd-unit"><div class="cd-digits"><div class="cd-cell"></div><div class="cd-cell"></div></div><span class="cd-label">HOURS</span></div>
+      <span class="cd-sep">:</span>
+      <div class="cd-unit"><div class="cd-digits"><div class="cd-cell"></div><div class="cd-cell"></div></div><span class="cd-label">MINUTES</span></div>
+      <span class="cd-sep">:</span>
+      <div class="cd-unit"><div class="cd-digits"><div class="cd-cell"></div><div class="cd-cell"></div></div><span class="cd-label">SECONDS</span></div>
+    </div>
+  </div>
+</section>
+
 <!-- ================= ABOUT / WHAT IS MIM ================= -->
 <section id="about">
   <div class="wrap">
@@ -243,6 +271,53 @@
         <p>Innovation and challenges focused on real-world problems and solutions.</p>
         <span class="track-explore">EXPLORE →</span>
       </a>
+    </div>
+  </div>
+</section>
+
+<!-- ================= TRACK TAKEOVER ================= -->
+<section class="takeover" aria-label="The four tracks">
+  <div class="takeover-stage">
+    <div class="tk-rail" aria-hidden="true"><i></i><i></i><i></i><i></i></div>
+    <div class="tk-chapter tk-perform" data-i="0">
+      <div class="tk-bg"></div>
+      <div class="tk-word">PERFORM</div>
+      <div class="ch-slot tk-fig" data-character="perform"></div>
+      <div class="tk-meta">
+        <span class="tk-num">TRACK 01</span>
+        <p>Dance, music, theatre, poetry — every form of talent that belongs on a stage.</p>
+        <a href="perform.html" class="btn btn-ghost btn-sm">EXPLORE PERFORM &rarr;</a>
+      </div>
+    </div>
+    <div class="tk-chapter tk-think" data-i="1">
+      <div class="tk-bg"></div>
+      <div class="tk-word">THINK</div>
+      <div class="ch-slot tk-fig" data-character="think"></div>
+      <div class="tk-meta">
+        <span class="tk-num">TRACK 02</span>
+        <p>MUN, debate, public speaking and research. Don't just have an opinion — defend it.</p>
+        <a href="think.html" class="btn btn-ghost btn-sm">EXPLORE THINK &rarr;</a>
+      </div>
+    </div>
+    <div class="tk-chapter tk-build" data-i="2">
+      <div class="tk-bg"></div>
+      <div class="tk-word">BUILD</div>
+      <div class="ch-slot tk-fig" data-character="build"></div>
+      <div class="tk-meta">
+        <span class="tk-num">TRACK 03</span>
+        <p>Hackathons, code, design and hardware. Turn an idea into something that runs.</p>
+        <a href="build.html" class="btn btn-ghost btn-sm">EXPLORE BUILD &rarr;</a>
+      </div>
+    </div>
+    <div class="tk-chapter tk-solve" data-i="3">
+      <div class="tk-bg"></div>
+      <div class="tk-word">SOLVE</div>
+      <div class="ch-slot tk-fig" data-character="solve"></div>
+      <div class="tk-meta">
+        <span class="tk-num">TRACK 04</span>
+        <p>Real problems, real constraints. Question the assumptions, then design the answer.</p>
+        <a href="solve.html" class="btn btn-ghost btn-sm">EXPLORE SOLVE &rarr;</a>
+      </div>
     </div>
   </div>
 </section>
@@ -604,5 +679,6 @@
 <script src="mim-script.js?v=2"></script>
 <script src="mim-characters.js?v=12"></script>
 <script src="mim-motion.js?v=1"></script>
+<script src="mim-showpiece.js?v=2"></script>
 </body>
 </html>

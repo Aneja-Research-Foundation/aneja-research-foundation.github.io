@@ -1207,3 +1207,258 @@ footer{
   .stagger.reveal.in > *{animation:none;}
   .track-card{transform:none;}
 }
+
+/* ============================================================
+   SET PIECES  (driven by mim-showpiece.js)
+   ============================================================ */
+
+/* ---------- 1. SCROLL-DRIVEN TRACK TAKEOVER ----------
+   A tall section whose stage sticks to the viewport: scrolling
+   through it plays four full-screen chapters, one per track. */
+.takeover{position:relative;height:440vh;}
+.takeover-stage{
+  position:sticky;
+  top:var(--nav-h,74px);
+  height:calc(100vh - var(--nav-h,74px));
+  overflow:hidden;
+}
+.tk-chapter{
+  position:absolute;inset:0;
+  opacity:0;
+  will-change:opacity;
+}
+.tk-chapter:not(.on){pointer-events:none;}
+/* only the chapter on screen spends cycles animating its figure */
+.tk-chapter:not(.on) .ch-slot *{animation-play-state:paused;}
+
+.tk-bg{position:absolute;inset:0;z-index:0;}
+.tk-perform .tk-bg{background:radial-gradient(70% 70% at 28% 18%,rgba(236,72,153,.34),transparent 62%),radial-gradient(60% 60% at 88% 86%,rgba(255,122,26,.26),transparent 62%),var(--bg);}
+.tk-think   .tk-bg{background:radial-gradient(70% 70% at 28% 18%,rgba(34,211,238,.30),transparent 62%),radial-gradient(60% 60% at 88% 86%,rgba(139,92,246,.28),transparent 62%),var(--bg);}
+.tk-build   .tk-bg{background:radial-gradient(70% 70% at 28% 18%,rgba(61,220,132,.28),transparent 62%),radial-gradient(60% 60% at 88% 86%,rgba(34,211,238,.26),transparent 62%),var(--bg);}
+.tk-solve   .tk-bg{background:radial-gradient(70% 70% at 28% 18%,rgba(251,191,36,.30),transparent 62%),radial-gradient(60% 60% at 88% 86%,rgba(255,77,0,.26),transparent 62%),var(--bg);}
+
+/* the giant word drifts across the screen as that chapter plays */
+.tk-word{
+  position:absolute;
+  top:42%;left:50%;
+  transform:translate(-50%,-50%) translateX(calc((0.5 - var(--p,.5)) * 32vw));
+  font-family:'Barlow Condensed',sans-serif;font-weight:800;font-style:italic;
+  font-size:clamp(74px,15vw,240px);
+  line-height:.82;
+  white-space:nowrap;
+  letter-spacing:-.01em;
+  z-index:1;
+  pointer-events:none;
+  -webkit-background-clip:text;background-clip:text;
+  -webkit-text-fill-color:transparent;color:transparent;
+  will-change:transform;
+}
+.tk-perform .tk-word{background-image:var(--grad-perform);}
+.tk-think   .tk-word{background-image:var(--grad-think);}
+.tk-build   .tk-word{background-image:var(--grad-build);}
+.tk-solve   .tk-word{background-image:var(--grad-solve);}
+
+.tk-fig{
+  position:absolute;
+  right:4%;bottom:0;
+  width:min(30vw,380px);
+  height:min(66vh,520px);
+  opacity:.95;
+  z-index:2;
+}
+.tk-fig::before{
+  content:"";
+  position:absolute;inset:-14% -10% -6%;
+  background:radial-gradient(58% 52% at 50% 56%,rgba(6,8,18,.92),rgba(6,8,18,.55) 62%,transparent 78%);
+  z-index:-1;
+}
+.tk-meta{
+  position:absolute;
+  left:6%;bottom:12%;
+  max-width:430px;
+  z-index:3;
+  transform:translateY(calc((var(--p,.5) - .5) * -40px));
+}
+.tk-meta .tk-num{
+  font-family:'JetBrains Mono',monospace;font-size:13px;letter-spacing:.16em;
+  display:block;margin-bottom:14px;color:var(--muted);
+}
+.tk-meta p{font-size:18px;line-height:1.65;color:var(--ink);margin-bottom:22px;}
+
+/* chapter rail */
+.tk-rail{
+  position:absolute;left:6%;top:12%;
+  display:flex;gap:8px;z-index:4;
+}
+.tk-rail i{
+  width:34px;height:3px;border-radius:2px;
+  background:rgba(255,255,255,.18);
+  transition:background .3s ease;
+}
+.tk-rail i.lit{background:var(--ink);}
+
+@media (max-width:900px){
+  .takeover{height:400vh;}
+  .tk-fig{width:52vw;height:44vh;right:-4%;opacity:.42;}
+  .tk-meta{left:7%;right:7%;bottom:9%;max-width:none;}
+  .tk-meta p{font-size:16px;}
+  .tk-word{top:36%;}
+}
+
+/* ---------- 2. CINEMATIC INTRO ---------- */
+.intro{display:none;}
+html.intro-armed body{overflow:hidden;}
+html.intro-armed .intro{
+  display:grid;place-items:center;
+  position:fixed;inset:0;z-index:2000;
+  background:var(--bg);
+  text-align:center;
+}
+.intro.out{animation:introWipe .7s cubic-bezier(.7,0,.3,1) forwards;}
+@keyframes introWipe{to{transform:translateY(-100%);}}
+.intro::after{
+  content:"";
+  position:absolute;left:0;right:0;bottom:-5px;height:5px;
+  background:var(--grad-1);
+}
+.intro-logo{
+  width:clamp(84px,13vw,116px);
+  height:clamp(84px,13vw,116px);
+  border-radius:50%;object-fit:cover;
+  animation:introLogo .85s cubic-bezier(.2,.85,.25,1) both;
+}
+@keyframes introLogo{
+  0%{opacity:0;transform:scale(.55) rotate(-14deg);}
+  100%{opacity:1;transform:scale(1) rotate(0);}
+}
+.intro-words{
+  position:relative;
+  height:1.05em;
+  margin-top:30px;
+  font-family:'Barlow Condensed',sans-serif;font-weight:800;font-style:italic;
+  font-size:clamp(38px,8vw,86px);
+  line-height:1.05;
+}
+.intro-words span{
+  position:absolute;left:50%;top:0;
+  transform:translateX(-50%);
+  white-space:nowrap;
+  opacity:0;
+  -webkit-background-clip:text;background-clip:text;
+  -webkit-text-fill-color:transparent;color:transparent;
+  animation:introSlam .5s cubic-bezier(.2,.9,.25,1) both;
+}
+.intro-words span:nth-child(1){background-image:var(--grad-perform);animation-delay:.60s;}
+.intro-words span:nth-child(2){background-image:var(--grad-think);animation-delay:.78s;}
+.intro-words span:nth-child(3){background-image:var(--grad-build);animation-delay:.96s;}
+.intro-words span:nth-child(4){background-image:var(--grad-solve);animation-delay:1.14s;}
+@keyframes introSlam{
+  0%{opacity:0;transform:translateX(-50%) scale(1.45);}
+  26%{opacity:1;transform:translateX(-50%) scale(1);}
+  72%{opacity:1;transform:translateX(-50%) scale(1);}
+  100%{opacity:0;transform:translateX(-50%) scale(.9);}
+}
+.intro-title{
+  margin-top:8px;
+  font-family:'Barlow Condensed',sans-serif;font-weight:800;font-style:italic;
+  font-size:clamp(30px,6vw,64px);
+  line-height:1.05;
+  opacity:0;
+  animation:introTitle .7s cubic-bezier(.2,.85,.25,1) 1.42s both;
+}
+.intro-title em{
+  font-style:italic;
+  -webkit-background-clip:text;background-clip:text;
+  -webkit-text-fill-color:transparent;color:transparent;
+  background-image:var(--grad-move);
+}
+@keyframes introTitle{
+  0%{opacity:0;transform:translateY(22px);}
+  100%{opacity:1;transform:translateY(0);}
+}
+.intro-skip{
+  position:absolute;right:22px;bottom:20px;
+  font-family:'JetBrains Mono',monospace;font-size:11px;letter-spacing:.16em;
+  color:var(--muted);background:none;border:0;cursor:pointer;
+  padding:10px;
+}
+.intro-skip:hover{color:var(--ink);}
+
+/* ---------- 3. COUNTDOWN ---------- */
+.countdown{
+  border-top:1px solid var(--line);
+  border-bottom:1px solid var(--line);
+  background:var(--bg-soft);
+  padding:52px 0 46px;
+  text-align:center;
+}
+.countdown .eyebrow{display:block;margin-bottom:26px;}
+.cd-grid{display:flex;justify-content:center;align-items:flex-start;gap:clamp(8px,2.2vw,26px);}
+.cd-unit{display:flex;flex-direction:column;align-items:center;gap:12px;}
+.cd-digits{display:flex;gap:6px;}
+.cd-cell{
+  position:relative;
+  width:clamp(38px,6.6vw,74px);
+  height:clamp(54px,9vw,100px);
+  border:1px solid var(--line);
+  border-radius:12px;
+  background:var(--panel);
+  overflow:hidden;
+  perspective:420px;
+  font-family:'Barlow Condensed',sans-serif;font-weight:800;font-style:italic;
+  font-size:clamp(32px,5.6vw,62px);
+  color:var(--ink);
+}
+.cd-cell span{
+  position:absolute;inset:0;
+  display:grid;place-items:center;
+  backface-visibility:hidden;
+}
+.cd-cell .old{transform-origin:center bottom;animation:flipOut .42s ease-in forwards;}
+.cd-cell .new{transform-origin:center top;animation:flipIn .42s ease-out forwards;}
+@keyframes flipOut{to{transform:rotateX(-92deg);opacity:0;}}
+@keyframes flipIn{from{transform:rotateX(92deg);opacity:0;}to{transform:rotateX(0);opacity:1;}}
+.cd-sep{
+  align-self:center;
+  font-size:clamp(22px,4vw,44px);
+  color:var(--muted-2);
+  padding-top:clamp(6px,1.4vw,14px);
+}
+.cd-label{
+  font-family:'JetBrains Mono',monospace;
+  font-size:10.5px;letter-spacing:.18em;color:var(--muted);
+}
+.cd-done{
+  font-family:'Barlow Condensed',sans-serif;font-weight:800;font-style:italic;
+  font-size:clamp(30px,6vw,64px);
+  -webkit-background-clip:text;background-clip:text;
+  -webkit-text-fill-color:transparent;color:transparent;
+  background-image:var(--grad-1);
+}
+
+/* ---------- 4. PAGE TRANSITION CURTAIN ---------- */
+.curtain{
+  position:fixed;inset:0;z-index:1500;
+  background:var(--grad-1);
+  transform:translateY(100%);
+  pointer-events:none;
+  will-change:transform;
+}
+.curtain.in{animation:curtainIn .48s cubic-bezier(.7,0,.3,1) forwards;}
+.curtain.out{animation:curtainOut .62s cubic-bezier(.7,0,.3,1) forwards;}
+@keyframes curtainIn{from{transform:translateY(100%);}to{transform:translateY(0);}}
+@keyframes curtainOut{from{transform:translateY(0);}to{transform:translateY(-100%);}}
+
+@media (prefers-reduced-motion: reduce){
+  /* the takeover collapses into four plain stacked panels */
+  .takeover{height:auto;}
+  .takeover-stage{position:static;height:auto;overflow:visible;}
+  .tk-chapter{position:relative;inset:auto;opacity:1 !important;min-height:70vh;}
+  .tk-word{position:static;transform:none;text-align:center;display:block;padding:40px 0 0;}
+  .tk-meta{position:static;transform:none;margin:0 auto 40px;padding:0 6%;}
+  .tk-fig,.tk-rail{display:none;}
+  .intro{display:none !important;}
+  .curtain{display:none;}
+  .cd-cell .old,.cd-cell .new{animation:none;}
+  .cd-cell .old{display:none;}
+}
