@@ -74,17 +74,36 @@ document.addEventListener('DOMContentLoaded', () => {
     });
   });
 
-  /* ---- interest form ----
-     Submits to the ARF Command Center's public API, which stores it in the
-     `interest_submissions` table — visible to staff under Responses at
-     /responses (Outreach/Registration/President/Super Admin only).
+  /* ---- registration switch ----
+     Until registration opens, the header buttons read COMING SOON and point
+     at the interest form. From 1 October 2026 (India time) they read
+     REGISTER NOW and go to the live registration form in the Command
+     Center, and the "registrations open on 1 October" copy updates to
+     match, so nobody has to edit the site that morning. Elements opt in
+     with data-reg-text (replacement HTML) and data-reg-link (retarget).
+     Add ?reg=open to any page URL to preview the post-launch state. */
+  const REG_OPENS_AT = new Date('2026-10-01T00:00:00+05:30').getTime();
+  const REG_URL = 'https://arf-command-center.vercel.app/register';
+  const regOpen = Date.now() >= REG_OPENS_AT
+    || new URLSearchParams(location.search).get('reg') === 'open';
+  if (regOpen) {
+    document.querySelectorAll('[data-reg-text]').forEach((el) => {
+      el.innerHTML = el.dataset.regText;
+    });
+    document.querySelectorAll('a[data-reg-link]').forEach((a) => {
+      a.href = REG_URL;
+    });
+    document.documentElement.classList.add('reg-open');
+  }
 
-     STAFF: update ARF_CC_API_BASE once the Command Center is deployed to a
-     real, reachable address (see the matching note in staff.html). It
-     currently points at localhost for local development only — submissions
-     made against the live site will silently fall back to local-only
-     storage (see catch block below) until this is updated. */
-  const ARF_CC_API_BASE = 'http://localhost:8010';
+  /* ---- interest form ----
+     Submits to the ARF Command Center's public API at
+     https://arf-command-center.vercel.app, which stores it in the
+     `interest_submissions` table — visible to staff under Responses.
+     The Command Center only accepts this from origins in its
+     CORS_ALLOW_ORIGINS setting; if a submission can't get through, it
+     falls back to local-only storage (catch block below). */
+  const ARF_CC_API_BASE = 'https://arf-command-center.vercel.app';
 
   const form = document.getElementById('interestForm');
   const formSuccess = document.getElementById('formSuccess');

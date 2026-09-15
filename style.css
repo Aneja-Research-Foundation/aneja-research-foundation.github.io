@@ -1067,3 +1067,18 @@ gap:8px;
 white-space:nowrap;
 }
 }
+
+/* NAV
+   At laptop widths the eight links wrapped inside themselves ("Make It Move
+   / 2026", "Case / Studies") and crowded the ARF wordmark. Keep every label
+   on one line, keep the wordmark from being squeezed, and let spacing and
+   size tighten with the viewport instead of a fixed 32px gap. Below 1000px
+   the existing stacked layout still takes over. */
+.navbar a{white-space:nowrap;}
+.navbar .logo{flex-shrink:0;}
+
+@media(min-width:1001px){
+.navbar{padding:18px clamp(24px,5vw,8%);gap:28px;}
+.navbar ul{gap:clamp(14px,1.9vw,32px);}
+.navbar a{font-size:clamp(13.5px,1.15vw,15px);}
+}
