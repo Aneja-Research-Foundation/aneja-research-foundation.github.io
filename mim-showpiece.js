@@ -74,44 +74,38 @@
     function endIntro() {
       if (finished) return;
       finished = true;
-      /* Work out how far the logo has to grow to cover the whole screen.
-         It sits above centre (the words and title stack under it), so the
-         distance that matters is to the farthest corner, not half the
-         diagonal. The zoom runs to that scale, then past it and fades. */
-      const logo = intro.querySelector('.intro-logo');
-      if (logo && logo.offsetWidth) {
-        const r = logo.getBoundingClientRect();
-        const cx = r.left + r.width / 2;
-        const cy = r.top + r.height / 2;
-        const far = Math.max(
-          Math.hypot(cx, cy),
-          Math.hypot(innerWidth - cx, cy),
-          Math.hypot(cx, innerHeight - cy),
-          Math.hypot(innerWidth - cx, innerHeight - cy)
-        );
-        const cover = (2 * far / logo.offsetWidth) * 1.04;
-        intro.style.setProperty('--zoom-cover', cover.toFixed(2));
-        intro.style.setProperty('--zoom-max', (cover * 1.35).toFixed(2));
+      /* Centre the reveal on the badge. It sits above the middle of the
+         screen because the words and title stack under it, so the opening
+         and the ring can't use a fixed percentage. */
+      const badge = intro.querySelector('.intro-badge');
+      if (badge) {
+        const r = badge.getBoundingClientRect();
+        const cx = (r.left + r.width / 2) + 'px';
+        const cy = (r.top + r.height / 2) + 'px';
+        intro.querySelectorAll('.intro-iris, .intro-ring').forEach(function (el) {
+          el.style.left = cx;
+          el.style.top = cy;
+        });
       }
       intro.classList.add('out');
       /* Release the scroll lock as the zoom starts so the page is live
          underneath — but NOT intro-armed, which is what keeps the overlay
          displayed. Dropping that here hid the whole outro instantly. */
       document.documentElement.classList.remove('intro-lock');
-      // deal the headline in as the oversized logo starts to fade, not while
-      // it's still covering the screen
+      // deal the headline in as the ring opens the site, not while the badge
+      // is still filling the middle of the screen
       setTimeout(function () {
         document.dispatchEvent(new Event('mim:intro-done'));
-      }, 1150);
+      }, 1450);
       setTimeout(function () {
         document.documentElement.classList.remove('intro-armed');
         intro.remove();
-      }, 1550);
+      }, 2050);
     }
     const skip = intro.querySelector('.intro-skip');
     if (skip) skip.addEventListener('click', endIntro);
     // belt and braces: if this page was armed anyway, don't hold the scroll
-    setTimeout(endIntro, still ? 0 : 1720);
+    setTimeout(endIntro, still ? 0 : 2300);
     // never trap the page behind the intro if something above throws
     setTimeout(function () {
       document.documentElement.classList.remove('intro-lock', 'intro-armed');
