@@ -22,6 +22,46 @@
   syncNavHeight();
   addEventListener('resize', syncNavHeight);
 
+  /* ================= 0. WHERE THE HOMEPAGE STARTS =================
+     A refresh should open at the top. Two things used to drop people
+     mid-page instead: the browser restoring the old scroll position, and a
+     leftover #tracks in the address (the Tracks menu link and Find Your
+     Track add it, and Safari hides it in the address bar) that the browser
+     jumps back to on every reload. Links that bring someone here on purpose,
+     like a track page's "Student Interest" link to #interest, still land on
+     their section, but only once the intro has let go of the scroll lock,
+     because while it's held the browser's own jump can't happen. */
+  const homepage = !!document.querySelector('.intro');
+  const navEntry = performance.getEntriesByType && performance.getEntriesByType('navigation')[0];
+  const navType = navEntry ? navEntry.type
+    : (performance.navigation && performance.navigation.type === 1 ? 'reload' : 'navigate');
+  let pendingHash = '';
+  if (homepage) {
+    if ('scrollRestoration' in history) history.scrollRestoration = 'manual';
+    if (navType === 'reload' || navType === 'back_forward') {
+      if (location.hash) history.replaceState(null, '', location.pathname + location.search);
+    } else if (location.hash && document.getElementById(decodeURIComponent(location.hash.slice(1)))) {
+      pendingHash = location.hash;
+    }
+    window.scrollTo(0, 0);
+  }
+  function settleScroll() {
+    if (!homepage) return;
+    const el = pendingHash && document.getElementById(decodeURIComponent(pendingHash.slice(1)));
+    if (el) {
+      const nav = document.querySelector('.navbar');
+      const offset = nav ? nav.offsetHeight : 0;
+      window.scrollTo(0, el.getBoundingClientRect().top + window.scrollY - offset);
+    } else {
+      window.scrollTo(0, 0);
+    }
+    pendingHash = '';
+  }
+  // without the intro holding the scroll (reduced motion), settle on load
+  if (homepage && !document.documentElement.classList.contains('intro-armed')) {
+    addEventListener('load', settleScroll);
+  }
+
   /* ================= 1. TRACK TAKEOVER ================= */
   const stage = document.querySelector('.takeover');
   if (stage && !still) {
@@ -92,6 +132,7 @@
          underneath — but NOT intro-armed, which is what keeps the overlay
          displayed. Dropping that here hid the whole outro instantly. */
       document.documentElement.classList.remove('intro-lock');
+      settleScroll();
       // deal the headline in as the ring opens the site, not while the badge
       // is still filling the middle of the screen
       setTimeout(function () {
