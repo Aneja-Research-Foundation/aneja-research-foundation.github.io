@@ -1650,3 +1650,34 @@ html.intro-armed .intro{
   35%{opacity:1;}
   100%{opacity:0;transform:translate(-50%,-50%) scale(.5) rotate(38deg);}
 }
+
+/* ---- PERFORM categories ----
+   Eleven cards on the expect-grid look. Eleven never fills a grid evenly,
+   and the grid's 1px line colour would show in the empty cell, so the last
+   card ("Other / Unique Talent") spans two columns wherever there are at
+   least two: 4 cols -> 4/4/2+2, 2 cols -> 2x5 + 2. */
+.cat-grid{grid-template-columns:repeat(4,1fr);}
+.cat-grid .cat-card{position:relative;min-height:168px;padding:34px 26px;}
+.cat-grid .cat-card:last-child{grid-column:span 2;}
+.cat-num{
+  position:absolute;top:22px;right:24px;
+  font-family:'JetBrains Mono',monospace;
+  font-size:12px;letter-spacing:.12em;
+  color:var(--muted-2);
+}
+.cat-grid .cat-note{
+  font-family:inherit;
+  font-size:13.5px;font-weight:400;
+  color:var(--muted);
+  margin-top:-8px;
+  line-height:1.5;
+}
+@media (max-width:900px){
+  .cat-grid{grid-template-columns:repeat(2,1fr);}
+}
+@media (max-width:560px){
+  .cat-grid{grid-template-columns:1fr;}
+  .cat-grid .cat-card:last-child{grid-column:auto;}
+  .cat-grid .cat-card{min-height:auto;flex-direction:row;align-items:center;padding:22px 22px;}
+  .cat-grid .cat-note{display:none;}
+}
