@@ -1330,25 +1330,28 @@ html.intro-armed .intro{
 .intro-skip{z-index:3;}
 /* Two beats, in order: the logo pushes in at you, and only then does the
    site open out of the middle of it. */
-.intro.out{pointer-events:none;animation:introSafety 1.25s linear forwards;}
-/* last-resort reveal if the iris ever fails to clear the viewport */
-@keyframes introSafety{0%,88%{opacity:1;}100%{opacity:0;}}
+.intro.out{pointer-events:none;animation:introSafety 1.5s linear forwards;}
+/* last-resort reveal if anything below misfires */
+@keyframes introSafety{0%,94%{opacity:1;}100%{opacity:0;}}
 
-.intro.out .intro-logo{animation:introZoom 1.25s cubic-bezier(.5,0,.35,1) forwards;}
+/* The logo winds up, then rushes at the viewer until it is bigger than the
+   screen. --zoom-cover (set in JS from the logo's distance to the farthest
+   corner) is the scale at which the badge covers every pixel; the dark
+   backdrop drops away behind it at exactly that point, so when the
+   oversized logo fades out, the site is what's left underneath. */
+.intro-logo{will-change:transform;}
+.intro.out .intro-logo{animation:introZoom 1.5s linear forwards;}
 @keyframes introZoom{
-  0%{transform:scale(1);opacity:1;}
-  13%{transform:scale(.84);opacity:1;}    /* wind-up, as the spokes land */
-  21%{transform:scale(1.08);opacity:1;}   /* the punch */
-  50%{transform:scale(2.5);opacity:1;}
-  72%{transform:scale(3.2);opacity:0;}
-  100%{transform:scale(3.6);opacity:0;}
+  0%{transform:scale(1);opacity:1;animation-timing-function:cubic-bezier(.3,0,.6,1);}
+  12%{transform:scale(.84);opacity:1;animation-timing-function:cubic-bezier(.2,.8,.3,1);}    /* wind-up, as the spokes land */
+  20%{transform:scale(1.08);opacity:1;animation-timing-function:cubic-bezier(.55,0,.85,.35);} /* the punch, then accelerate */
+  62%{transform:scale(var(--zoom-cover,16));opacity:1;animation-timing-function:linear;}      /* edge-to-edge */
+  80%{transform:scale(var(--zoom-max,22));opacity:1;animation-timing-function:ease-out;}
+  100%{transform:scale(calc(var(--zoom-max,22) * 1.2));opacity:0;}
 }
-/* opens once the zoom has landed, not alongside it */
-.intro.out .intro-iris{animation:irisOpen .62s cubic-bezier(.62,0,.36,1) .58s forwards;}
-@keyframes irisOpen{
-  0%{width:0;height:0;}
-  100%{width:260vmax;height:260vmax;}
-}
+/* the backdrop is hidden behind a full-screen logo by 62%, so it can just go */
+.intro.out .intro-iris{animation:irisDrop 1.5s linear forwards;}
+@keyframes irisDrop{0%,63%{opacity:1;}64%,100%{opacity:0;}}
 .intro.out .intro-words,
 .intro.out .intro-title,
 .intro.out .intro-skip{animation:introClear .22s ease forwards;}

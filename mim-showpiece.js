@@ -74,26 +74,39 @@
     function endIntro() {
       if (finished) return;
       finished = true;
-      /* Open the iris from the logo's actual centre, so the site comes out
-         of the badge rather than from a spot near it. The logo sits above
-         centre because the words and title stack under it. */
+      /* Work out how far the logo has to grow to cover the whole screen.
+         It sits above centre (the words and title stack under it), so the
+         distance that matters is to the farthest corner, not half the
+         diagonal. The zoom runs to that scale, then past it and fades. */
       const logo = intro.querySelector('.intro-logo');
-      const iris = intro.querySelector('.intro-iris');
-      if (logo && iris) {
+      if (logo && logo.offsetWidth) {
         const r = logo.getBoundingClientRect();
-        iris.style.left = (r.left + r.width / 2) + 'px';
-        iris.style.top = (r.top + r.height / 2) + 'px';
+        const cx = r.left + r.width / 2;
+        const cy = r.top + r.height / 2;
+        const far = Math.max(
+          Math.hypot(cx, cy),
+          Math.hypot(innerWidth - cx, cy),
+          Math.hypot(cx, innerHeight - cy),
+          Math.hypot(innerWidth - cx, innerHeight - cy)
+        );
+        const cover = (2 * far / logo.offsetWidth) * 1.04;
+        intro.style.setProperty('--zoom-cover', cover.toFixed(2));
+        intro.style.setProperty('--zoom-max', (cover * 1.35).toFixed(2));
       }
       intro.classList.add('out');
       /* Release the scroll lock as the zoom starts so the page is live
          underneath — but NOT intro-armed, which is what keeps the overlay
          displayed. Dropping that here hid the whole outro instantly. */
       document.documentElement.classList.remove('intro-lock');
-      document.dispatchEvent(new Event('mim:intro-done'));
+      // deal the headline in as the oversized logo starts to fade, not while
+      // it's still covering the screen
+      setTimeout(function () {
+        document.dispatchEvent(new Event('mim:intro-done'));
+      }, 1150);
       setTimeout(function () {
         document.documentElement.classList.remove('intro-armed');
         intro.remove();
-      }, 1300);
+      }, 1550);
     }
     const skip = intro.querySelector('.intro-skip');
     if (skip) skip.addEventListener('click', endIntro);
