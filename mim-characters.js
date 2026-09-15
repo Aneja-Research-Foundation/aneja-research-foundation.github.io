@@ -15,7 +15,8 @@ const MIM_CHARACTERS = {
 <svg class="ch ch-perform" viewBox="0 0 200 260" fill="none"
      stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
   <defs>
-    <linearGradient id="ch-perform-g" x1="0" y1="0" x2="1" y2="1">
+    <linearGradient id="ch-perform-g" gradientUnits="userSpaceOnUse"
+                    x1="0" y1="0" x2="200" y2="260">
       <stop offset="0%" stop-color="var(--magenta)"/>
       <stop offset="100%" stop-color="var(--orange)"/>
     </linearGradient>
@@ -52,7 +53,8 @@ const MIM_CHARACTERS = {
 <svg class="ch ch-think" viewBox="0 0 200 260" fill="none"
      stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
   <defs>
-    <linearGradient id="ch-think-g" x1="0" y1="0" x2="1" y2="1">
+    <linearGradient id="ch-think-g" gradientUnits="userSpaceOnUse"
+                    x1="0" y1="0" x2="200" y2="260">
       <stop offset="0%" stop-color="var(--cyan)"/>
       <stop offset="100%" stop-color="var(--violet)"/>
     </linearGradient>
@@ -85,40 +87,51 @@ const MIM_CHARACTERS = {
   /* BUILD — a boy at a laptop, fingers tapping, code filling the screen
      line by line with a blinking cursor. */
   build: `
-<svg class="ch ch-build" viewBox="0 0 200 260" fill="none"
+<svg class="ch ch-build" viewBox="0 0 230 260" fill="none"
      stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
   <defs>
-    <linearGradient id="ch-build-g" x1="0" y1="0" x2="1" y2="1">
+    <linearGradient id="ch-build-g" gradientUnits="userSpaceOnUse"
+                    x1="0" y1="0" x2="230" y2="260">
       <stop offset="0%" stop-color="var(--green)"/>
       <stop offset="100%" stop-color="var(--cyan)"/>
     </linearGradient>
   </defs>
-  <g stroke="url(#ch-build-g)" stroke-width="5">
-    <ellipse class="ch-shadow" cx="104" cy="234" rx="50" ry="7" stroke-width="3"/>
+  <!-- screen glow, behind the line work -->
+  <path d="M120 166 126 104h82l6 62z" fill="url(#ch-build-g)" opacity=".13"/>
 
-    <path d="M42 64c2-12 12-20 24-17"/>
-    <circle cx="58" cy="70" r="16"/>
-    <path class="ch-lean" d="M58 86c5 16 8 32 10 48"/>
+  <!-- desk -->
+  <path d="M4 200h222" stroke="url(#ch-build-g)" stroke-width="4" opacity=".45"/>
 
-    <path class="ch-arm-type-a" d="M62 104c12 8 23 17 34 26"/>
-    <path class="ch-arm-type-b" d="M64 116c13 7 25 16 36 26"/>
-
-    <path d="M68 134h34"/>
-    <path d="M102 136c3 16 4 30 4 42"/>
-    <path d="M96 180h20"/>
-
-    <path d="M60 138v40M96 140v34" stroke-width="4"/>
-
-    <path d="M118 150h56l-8-52h-40z"/>
-    <path d="M110 152h76l6 12h-76z"/>
+  <!-- Seen from behind his shoulder: head, shoulders, and one arm reaching
+       forward. No legs — the desk cuts him off. -->
+  <g class="ch-lean" stroke="url(#ch-build-g)" stroke-width="5">
+    <circle cx="54" cy="76" r="22"/>
+    <path d="M32 72a22 22 0 0 1 43-6"/>
+    <path d="M45 97v24M63 97v22"/>
+    <path d="M24 200v-60c0-13 11-20 30-20s30 7 30 20v60"/>
   </g>
+
+  <g stroke="url(#ch-build-g)" stroke-width="5">
+    <path d="M120 166 126 104h82l6 62z"/>
+    <path d="M120 166 108 188h90l16-22"/>
+  </g>
+
+  <!-- pathLength normalises every line to 1 unit so one dash keyframe
+       types all three in at the same speed regardless of length -->
   <g stroke="url(#ch-build-g)" stroke-width="4" class="ch-code">
-    <path d="M128 112h26"/>
-    <path d="M131 124h30"/>
-    <path d="M134 136h22"/>
+    <path d="M138 122h40" pathLength="1"/>
+    <path d="M142 134h50" pathLength="1"/>
+    <path d="M146 146h26" pathLength="1"/>
   </g>
   <g stroke="url(#ch-build-g)" stroke-width="4" class="ch-caret">
-    <path d="M162 131v11"/>
+    <path d="M178 142v12"/>
+  </g>
+
+  <!-- arms last, so the hands land on top of the keyboard rather than
+       disappearing behind it -->
+  <g class="ch-lean" stroke="url(#ch-build-g)" stroke-width="5">
+    <path class="ch-arm-type-b" d="M86 166 126 186" opacity=".5"/>
+    <path class="ch-arm-type-a" d="M84 142 110 174l42 4"/>
   </g>
 </svg>`,
 
@@ -128,7 +141,8 @@ const MIM_CHARACTERS = {
 <svg class="ch ch-solve" viewBox="0 0 220 260" fill="none"
      stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
   <defs>
-    <linearGradient id="ch-solve-g" x1="0" y1="0" x2="1" y2="1">
+    <linearGradient id="ch-solve-g" gradientUnits="userSpaceOnUse"
+                    x1="0" y1="0" x2="220" y2="260">
       <stop offset="0%" stop-color="var(--amber)"/>
       <stop offset="100%" stop-color="var(--orange-deep)"/>
     </linearGradient>

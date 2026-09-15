@@ -1003,21 +1003,21 @@ footer{
 }
 
 /* ---------- BUILD: typing, code filling in, caret blinking ---------- */
-.ch-live .ch-build .ch-arm-type-a{
-  transform-origin:64px 104px;
-  animation:chTypeA .42s ease-in-out infinite;
-}
 .ch-live .ch-build .ch-arm-type-b{
-  transform-origin:68px 116px;
+  transform-origin:86px 166px;
   animation:chTypeB .42s ease-in-out infinite;
 }
+.ch-live .ch-build .ch-arm-type-a{
+  transform-origin:84px 142px;
+  animation:chTypeA .42s ease-in-out infinite;
+}
 .ch-live .ch-build .ch-lean{
-  transform-origin:60px 86px;
+  transform-origin:54px 200px;
   animation:chLean 3.6s ease-in-out infinite;
 }
 .ch-live .ch-build .ch-code path{
-  stroke-dasharray:34;
-  animation:chCodeType 3.6s steps(1,end) infinite;
+  stroke-dasharray:1;
+  animation:chCodeType 3.6s ease-out infinite;
 }
 .ch-live .ch-build .ch-code path:nth-child(1){animation-delay:0s;}
 .ch-live .ch-build .ch-code path:nth-child(2){animation-delay:.5s;}
@@ -1025,11 +1025,11 @@ footer{
 .ch-live .ch-build .ch-caret{animation:chBlink 1s steps(1,end) infinite;}
 @keyframes chTypeA{0%,100%{transform:rotate(0deg);}50%{transform:rotate(3.5deg);}}
 @keyframes chTypeB{0%,100%{transform:rotate(3.5deg);}50%{transform:rotate(0deg);}}
-@keyframes chLean{0%,100%{transform:rotate(0deg);}50%{transform:rotate(2.5deg);}}
+@keyframes chLean{0%,100%{transform:rotate(0deg);}50%{transform:rotate(1.2deg);}}
 @keyframes chCodeType{
-  0%{stroke-dashoffset:34;}
+  0%{stroke-dashoffset:1;}
   22%,84%{stroke-dashoffset:0;}
-  96%,100%{stroke-dashoffset:34;}
+  96%,100%{stroke-dashoffset:1;}
 }
 @keyframes chBlink{0%,49%{opacity:1;}50%,100%{opacity:0;}}
 
