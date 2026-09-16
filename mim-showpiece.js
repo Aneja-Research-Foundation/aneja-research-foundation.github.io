@@ -146,11 +146,11 @@
     const skip = intro.querySelector('.intro-skip');
     if (skip) skip.addEventListener('click', endIntro);
     // belt and braces: if this page was armed anyway, don't hold the scroll
-    setTimeout(endIntro, still ? 0 : 2300);
+    setTimeout(endIntro, still ? 0 : 3900);
     // never trap the page behind the intro if something above throws
     setTimeout(function () {
       document.documentElement.classList.remove('intro-lock', 'intro-armed');
-    }, 6000);
+    }, 8000);
   }
 
   /* ================= 3. COUNTDOWN =================
