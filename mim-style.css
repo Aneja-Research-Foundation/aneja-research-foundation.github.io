@@ -1864,3 +1864,8 @@ html.intro-armed .intro{
 @media (max-width:900px){
   .entry-grid,.entry-perks{grid-template-columns:1fr;}
 }
+
+/* ---------- track page share row ---------- */
+.track-share{display:flex;flex-wrap:wrap;gap:12px;margin-top:26px;position:relative;z-index:2;}
+.track-share .share-wa{background:#25d366;color:#04140a;border-color:#25d366;}
+.track-share .share-wa:hover{filter:brightness(1.08);}

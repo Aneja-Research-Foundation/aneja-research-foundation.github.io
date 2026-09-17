@@ -90,8 +90,12 @@ document.addEventListener('DOMContentLoaded', () => {
     document.querySelectorAll('[data-reg-text]').forEach((el) => {
       el.innerHTML = el.dataset.regText;
     });
+    // on a track page, open the form with that track already chosen
+    const page = location.pathname.split('/').pop().replace('.html', '');
+    const onTrack = ['perform', 'think', 'build', 'solve'].indexOf(page) !== -1;
     document.querySelectorAll('a[data-reg-link]').forEach((a) => {
-      a.href = REG_URL;
+      const track = a.dataset.regTrack || (onTrack ? page : '');
+      a.href = track ? REG_URL + '?track=' + track.toUpperCase() : REG_URL;
     });
     document.documentElement.classList.add('reg-open');
   }
@@ -139,4 +143,26 @@ document.addEventListener('DOMContentLoaded', () => {
     });
   }
 
+});
+
+/* ---- share buttons on track pages ----
+   Phones get the system share sheet (WhatsApp, Instagram, anything);
+   elsewhere the button copies the link. The WhatsApp button next to it is
+   a plain link and needs no script. */
+document.querySelectorAll('[data-share]').forEach((btn) => {
+  btn.addEventListener('click', async () => {
+    const data = { title: document.title, text: btn.dataset.share, url: btn.dataset.url };
+    if (navigator.share) {
+      try { await navigator.share(data); } catch (e) { /* closed the sheet */ }
+      return;
+    }
+    try {
+      await navigator.clipboard.writeText(data.url);
+      const label = btn.textContent;
+      btn.textContent = 'LINK COPIED ✓';
+      setTimeout(() => { btn.textContent = label; }, 1800);
+    } catch (e) {
+      window.prompt('Copy this link:', data.url);
+    }
+  });
 });
