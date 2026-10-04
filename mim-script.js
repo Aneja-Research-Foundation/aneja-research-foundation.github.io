@@ -82,20 +82,17 @@ document.addEventListener('DOMContentLoaded', () => {
      deliberately no date trigger — the timeline may still move.
      Elements opt in with data-reg-text (replacement HTML) and
      data-reg-link (retarget). Add ?reg=open to any page URL to preview. */
-  const REGISTRATION_OPEN = false;
-  const REG_URL = 'https://arf-command-center.vercel.app/register';
+  const REGISTRATION_OPEN = true;
+  const REG_URL = 'https://docs.google.com/forms/d/e/1FAIpQLSevxWHyQwUpNfgWQJy7a6om4vHZbH7POicvG0sdUy0KgkUdKA/viewform';
   const regOpen = REGISTRATION_OPEN
     || new URLSearchParams(location.search).get('reg') === 'open';
   if (regOpen) {
     document.querySelectorAll('[data-reg-text]').forEach((el) => {
       el.innerHTML = el.dataset.regText;
     });
-    // on a track page, open the form with that track already chosen
-    const page = location.pathname.split('/').pop().replace('.html', '');
-    const onTrack = ['perform', 'think', 'build', 'solve'].indexOf(page) !== -1;
+        // the Google Form asks for the track itself, so no ?track= to add
     document.querySelectorAll('a[data-reg-link]').forEach((a) => {
-      const track = a.dataset.regTrack || (onTrack ? page : '');
-      a.href = track ? REG_URL + '?track=' + track.toUpperCase() : REG_URL;
+      a.href = REG_URL;
     });
     document.documentElement.classList.add('reg-open');
   }
