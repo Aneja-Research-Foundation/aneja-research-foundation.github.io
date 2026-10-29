@@ -1,5 +1,4 @@
 User-agent: *
 Allow: /
-Disallow: /staff.html
 
 Sitemap: https://aneja-research-foundation.github.io/sitemap.xml
