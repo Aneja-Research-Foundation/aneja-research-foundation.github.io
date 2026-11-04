@@ -1,0 +1,4 @@
+User-agent: *
+Allow: /
+
+Sitemap: https://aneja-research-foundation.github.io/sitemap.xml
